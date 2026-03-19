@@ -4,10 +4,11 @@ import { Sun, Moon } from "lucide-react";
 
 <button
     id="theme-toggle"
-    class="p-2 rounded-full hover:bg-white/10 transition-colors"
+    class="p-2 rounded-full hover:bg-white/10 transition-colors relative w-9 h-9 flex items-center justify-center"
     aria-label="Toggle Theme"
 >
-    <Sun className="w-5 h-5 hidden" id="sun-icon" />
+    <!-- Sun shown in dark mode (to switch to light). Default visible since dark is default. -->
+    <Sun className="w-5 h-5" id="sun-icon" />
     <Moon className="w-5 h-5 hidden" id="moon-icon" />
 </button>
 
@@ -16,15 +17,10 @@ import { Sun, Moon } from "lucide-react";
     const sunIcon = document.getElementById("sun-icon");
     const moonIcon = document.getElementById("moon-icon");
 
-    // Check for saved theme or default to dark
-    const getTheme = () => {
-        if (
-            typeof localStorage !== "undefined" &&
-            localStorage.getItem("theme")
-        ) {
-            return localStorage.getItem("theme");
+    const getTheme = (): string => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+            return localStorage.getItem("theme") as string;
         }
-        // Default to dark theme
         return "dark";
     };
 
@@ -32,7 +28,8 @@ import { Sun, Moon } from "lucide-react";
         document.documentElement.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
 
-        // Update icons - show sun in light mode (to switch to dark), show moon in dark mode (to switch to light)
+        // In dark mode: show sun (click to go light)
+        // In light mode: show moon (click to go dark)
         if (theme === "light") {
             sunIcon?.classList.add("hidden");
             moonIcon?.classList.remove("hidden");
@@ -42,13 +39,11 @@ import { Sun, Moon } from "lucide-react";
         }
     };
 
-    // Initialize theme
-    setTheme(getTheme() || "dark");
+    // Initialize immediately
+    setTheme(getTheme());
 
     themeToggle?.addEventListener("click", () => {
-        const currentTheme =
-            document.documentElement.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-        setTheme(newTheme);
+        const current = document.documentElement.getAttribute("data-theme");
+        setTheme(current === "dark" ? "light" : "dark");
     });
 </script>

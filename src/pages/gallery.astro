@@ -1,14 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getFolders, getImagesInFolder } from '../lib/cloudinary';
-import { Image } from 'lucide-react';
+import { Images } from 'lucide-react';
+// Note: Lucide React icons render as static HTML in Astro without client: directive
 
 // Fetch folders at build time
 const rootFolder = import.meta.env.CLOUDINARY_ROOT_FOLDER;
 const allFolders = await getFolders(rootFolder);
 const folders = allFolders.filter(f => f.name.toLowerCase() !== 'hero');
 
-// Fetch images for each folder (group)
+// Fetch images for each folder
 const folderData = await Promise.all(
   folders.map(async (folder) => {
     const images = await getImagesInFolder(folder.path);
@@ -16,66 +17,308 @@ const folderData = await Promise.all(
   })
 );
 
-// Also fetch images directly in the root folder (if any)
+// Root-level images (if any)
 let rootImages: any[] = [];
 if (rootFolder) {
-    rootImages = await getImagesInFolder(rootFolder);
+  rootImages = await getImagesInFolder(rootFolder);
 }
 
 const galleryData = [
-    // Add root images as a "General" or "Highlights" group if they exist
-    ...(rootImages.length > 0 ? [{ folder: { name: "Highlights", path: rootFolder }, images: rootImages }] : []),
-    ...folderData
+  ...(rootImages.length > 0 ? [{ folder: { name: "Highlights", path: rootFolder }, images: rootImages }] : []),
+  ...folderData
 ];
+
+// Flatten all images for lightbox index tracking
+let globalImageIndex = 0;
 ---
 
 <Layout title="Gallery - MS Sports Academy">
-    <div class="pt-24 pb-12 md:pt-32 md:pb-20 container mx-auto px-4">
-        <div class="text-center mb-10 md:mb-16">
-            <h1 class="text-3xl md:text-5xl font-bold mb-4">Our <span class="text-[var(--color-primary)]">Gallery</span></h1>
-            <p class="text-[var(--text-muted)] max-w-2xl mx-auto text-sm md:text-base">
-                Glimpses of our training sessions, tournaments, and happy moments.
-            </p>
-        </div>
+  <main class="min-h-screen pt-24 pb-20 md:pt-32 md:pb-24">
+    <div class="container mx-auto px-4">
 
-        {galleryData.length === 0 ? (
-            <div class="text-center py-20 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)]">
-                <Image className="w-16 h-16 mx-auto text-[var(--text-muted)] mb-4" />
-                <p class="text-[var(--text-muted)]">No images found or gallery is being set up.</p>
-            </div>
-        ) : (
-            <div class="space-y-12 md:space-y-20">
-                {galleryData.map(({ folder, images }) => (
-                    <section>
-                        <div class="flex items-center gap-4 mb-8">
-                            <h2 class="text-3xl font-bold capitalize">{folder.name}</h2>
-                            <div class="h-px bg-[var(--border-color)] flex-1"></div>
-                        </div>
-                        
-                        {images.length > 0 ? (
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {images.map((img) => (
-                                    <div class="group relative aspect-video overflow-hidden rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)]">
-                                        <img 
-                                            src={img.secure_url} 
-                                            alt={img.public_id}
-                                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                            loading="lazy"
-                                        />
-                                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                            <button class="bg-white/10 backdrop-blur text-white px-4 py-2 rounded-full border border-white/20 hover:bg-white hover:text-black transition-colors">
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
+      <!-- Page Header -->
+      <div class="text-center mb-12 md:mb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 scroll-reveal">
+          <Images className="w-4 h-4 text-[var(--color-primary)]" />
+          <span class="text-sm font-semibold text-[var(--text-muted)]">Photo Gallery</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 scroll-reveal" style="--reveal-delay: 100ms">
+          Our <span class="text-gradient">Gallery</span>
+        </h1>
+        <p class="text-[var(--text-muted)] max-w-xl mx-auto text-lg scroll-reveal" style="--reveal-delay: 200ms">
+          Glimpses of our training sessions, tournaments, and memorable moments.
+        </p>
+      </div>
+
+      {galleryData.length === 0 ? (
+        <!-- Empty state -->
+        <div class="text-center py-24 card-modern rounded-3xl border border-[var(--border-color)] max-w-md mx-auto">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl glass flex items-center justify-center">
+            <Images className="w-8 h-8 text-[var(--text-muted)]" />
+          </div>
+          <h3 class="font-bold text-xl mb-2">Gallery Coming Soon</h3>
+          <p class="text-[var(--text-muted)] text-sm">No images found or gallery is being set up.</p>
+        </div>
+      ) : (
+        <div>
+          <!-- Category Filter Tabs -->
+          <div class="flex flex-wrap gap-3 justify-center mb-12 scroll-reveal" style="--reveal-delay: 300ms">
+            <button
+              class="filter-tab px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 border"
+              data-filter="all"
+            >
+              All
+              <span class="ml-1.5 text-xs opacity-60">({galleryData.reduce((acc, g) => acc + g.images.length, 0)})</span>
+            </button>
+            {galleryData.map(({ folder, images }) => (
+              <button
+                class="filter-tab px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 border"
+                data-filter={folder.name.toLowerCase()}
+              >
+                {folder.name}
+                <span class="ml-1.5 text-xs opacity-60">({images.length})</span>
+              </button>
+            ))}
+          </div>
+
+          <!-- Gallery Sections -->
+          <div class="space-y-16 md:space-y-24">
+            {galleryData.map(({ folder, images }) => (
+              <section
+                class="gallery-section scroll-reveal"
+                data-folder={folder.name.toLowerCase()}
+              >
+                <!-- Section header -->
+                <div class="flex items-center gap-5 mb-8">
+                  <div class="flex items-center gap-3">
+                    <div class="w-1 h-8 rounded-full bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-secondary)]"></div>
+                    <h2 class="text-2xl md:text-3xl font-bold capitalize">{folder.name}</h2>
+                  </div>
+                  <div class="h-px bg-gradient-to-r from-[var(--border-color)] to-transparent flex-1"></div>
+                  <span class="text-sm text-[var(--text-dimmed)] font-medium shrink-0">{images.length} photos</span>
+                </div>
+
+                {images.length > 0 ? (
+                  <!-- Masonry grid via CSS columns -->
+                  <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-5">
+                    {images.map((img, i) => {
+                      const idx = globalImageIndex++;
+                      return (
+                        <div
+                          class="break-inside-avoid mb-4 md:mb-5 group relative overflow-hidden rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] cursor-pointer lightbox-trigger"
+                          data-src={img.secure_url}
+                          data-alt={`${folder.name} photo ${i + 1}`}
+                          data-index={idx}
+                          data-folder={folder.name.toLowerCase()}
+                        >
+                          <img
+                            src={img.secure_url}
+                            alt={`${folder.name} - photo ${i + 1}`}
+                            class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105 block"
+                            loading="lazy"
+                          />
+                          <!-- Hover overlay -->
+                          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-end p-5">
+                            <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                              <div class="w-10 h-10 rounded-full glass flex items-center justify-center mb-2 mx-auto">
+                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                </svg>
+                              </div>
+                              <p class="text-white text-xs font-semibold uppercase tracking-widest">View</p>
                             </div>
-                        ) : (
-                            <p class="text-[var(--text-muted)] italic">No images in this folder yet.</p>
-                        )}
-                    </section>
-                ))}
-            </div>
-        )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p class="text-[var(--text-muted)] italic text-sm py-8 text-center">No images in this folder yet.</p>
+                )}
+              </section>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
+  </main>
+
+  <!-- ===== LIGHTBOX MODAL ===== -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-[200] hidden items-center justify-center"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image viewer"
+  >
+    <!-- Backdrop -->
+    <div id="lightbox-backdrop" class="absolute inset-0 bg-black/95 backdrop-blur-sm"></div>
+
+    <!-- Close button -->
+    <button
+      id="lb-close"
+      class="absolute top-5 right-5 z-10 w-11 h-11 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all"
+      aria-label="Close"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Prev button -->
+    <button
+      id="lb-prev"
+      class="absolute left-4 md:left-6 z-10 w-11 h-11 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all"
+      aria-label="Previous image"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <!-- Next button -->
+    <button
+      id="lb-next"
+      class="absolute right-4 md:right-6 z-10 w-11 h-11 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all"
+      aria-label="Next image"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    <!-- Image container -->
+    <div class="relative z-10 flex flex-col items-center justify-center max-w-[92vw] max-h-[92vh]">
+      <img
+        id="lb-img"
+        src=""
+        alt=""
+        class="max-w-full max-h-[82vh] object-contain rounded-xl shadow-2xl transition-opacity duration-200"
+      />
+      <!-- Counter -->
+      <p id="lb-counter" class="mt-4 text-white/50 text-sm font-medium"></p>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  /* Active filter tab */
+  .filter-tab {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+  }
+  .filter-tab:hover {
+    border-color: var(--border-color-hover);
+    color: var(--text-main);
+  }
+  .filter-tab.active-tab {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #000;
+  }
+</style>
+
+<script>
+  // ====== Category Filter ======
+  const filterTabs = document.querySelectorAll<HTMLButtonElement>('.filter-tab');
+  const gallerySections = document.querySelectorAll<HTMLElement>('.gallery-section');
+
+  function setActiveFilter(filterValue: string) {
+    filterTabs.forEach(tab => {
+      tab.classList.toggle('active-tab', tab.dataset.filter === filterValue);
+    });
+
+    gallerySections.forEach(section => {
+      if (filterValue === 'all' || section.dataset.folder === filterValue) {
+        section.classList.remove('hidden');
+      } else {
+        section.classList.add('hidden');
+      }
+    });
+
+    rebuildImageIndex();
+  }
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      setActiveFilter(tab.dataset.filter || 'all');
+    });
+  });
+
+  // Set default active tab
+  setActiveFilter('all');
+
+  // ====== Lightbox ======
+  interface LBImage {
+    src: string;
+    alt: string;
+  }
+
+  let imageIndex: LBImage[] = [];
+  let currentLBIndex = 0;
+
+  function rebuildImageIndex() {
+    imageIndex = [];
+    document.querySelectorAll<HTMLElement>('.gallery-section:not(.hidden) .lightbox-trigger').forEach(el => {
+      imageIndex.push({
+        src: el.dataset.src || '',
+        alt: el.dataset.alt || 'Gallery image',
+      });
+    });
+  }
+
+  rebuildImageIndex();
+
+  function openLightbox(index: number) {
+    if (imageIndex.length === 0) return;
+    currentLBIndex = ((index % imageIndex.length) + imageIndex.length) % imageIndex.length;
+
+    const lightbox = document.getElementById('lightbox')!;
+    const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+    const lbCounter = document.getElementById('lb-counter')!;
+
+    lbImg.style.opacity = '0';
+    lbImg.src = imageIndex[currentLBIndex].src;
+    lbImg.alt = imageIndex[currentLBIndex].alt;
+    lbImg.onload = () => { lbImg.style.opacity = '1'; };
+    lbCounter.textContent = `${currentLBIndex + 1} / ${imageIndex.length}`;
+
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    const lightbox = document.getElementById('lightbox')!;
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  // Trigger open from gallery images
+  document.querySelectorAll<HTMLElement>('.lightbox-trigger').forEach((el, i) => {
+    el.addEventListener('click', () => {
+      // Find index in current imageIndex array by src
+      const src = el.dataset.src || '';
+      const idx = imageIndex.findIndex(img => img.src === src);
+      openLightbox(idx >= 0 ? idx : i);
+    });
+  });
+
+  // Navigation
+  document.getElementById('lb-prev')?.addEventListener('click', () => openLightbox(currentLBIndex - 1));
+  document.getElementById('lb-next')?.addEventListener('click', () => openLightbox(currentLBIndex + 1));
+  document.getElementById('lb-close')?.addEventListener('click', closeLightbox);
+  document.getElementById('lightbox-backdrop')?.addEventListener('click', closeLightbox);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox?.classList.contains('hidden')) return;
+
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') openLightbox(currentLBIndex - 1);
+    if (e.key === 'ArrowRight') openLightbox(currentLBIndex + 1);
+  });
+</script>

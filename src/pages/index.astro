@@ -16,6 +16,8 @@ import {
     Award,
     Volume2,
     VolumeX,
+    Shield,
+    Heart,
 } from "lucide-react";
 
 const heroImages = await getHeroImages();
@@ -26,6 +28,7 @@ const sports = [
         desc: "3 high-quality synthetic courts with professional coaching for beginners to competitive players.",
         icon: "🏸",
         image: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2070&auto=format&fit=crop",
+        color: "var(--color-primary)",
         gradient: "from-lime-500/20 to-green-500/20",
     },
     {
@@ -33,6 +36,7 @@ const sports = [
         desc: "Outdoor tennis coaching focusing on technique, agility, and match practice.",
         icon: "🎾",
         image: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=2070&auto=format&fit=crop",
+        color: "var(--color-secondary)",
         gradient: "from-cyan-500/20 to-blue-500/20",
     },
     {
@@ -40,6 +44,7 @@ const sports = [
         desc: "Sharpen your reflexes with our professional table tennis facilities and coaching.",
         icon: "🏓",
         image: "https://images.unsplash.com/photo-1534158914592-062992bbe900?q=80&w=2070&auto=format&fit=crop",
+        color: "var(--color-accent)",
         gradient: "from-rose-500/20 to-pink-500/20",
     },
     {
@@ -47,25 +52,66 @@ const sports = [
         desc: "Dedicated gym and fitness sessions to build strength, endurance, and athletic performance.",
         icon: "💪",
         image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop",
+        color: "var(--color-gold)",
         gradient: "from-orange-500/20 to-amber-500/20",
     },
+];
+
+const achievements = [
+    { value: 4, suffix: "+", label: "Sports Disciplines", color: "text-gradient" },
+    { value: 500, suffix: "+", label: "Athletes Trained", color: "text-gradient-secondary" },
+    { value: 30, suffix: "+", label: "Years Experience", color: "text-gradient-accent" },
+    { value: 20, suffix: "+", label: "Championship Titles", color: "text-gradient-gold" },
 ];
 
 const testimonials = [
     {
         author: "Venkat D",
+        role: "Parent",
+        avatar: "https://i.pravatar.cc/80?u=venkat-d",
         text: "Professionally managed sports academy in Perundurai. Clean, well maintained facilities. One of the best academies with Badminton, TT, Tennis, and Gym under one roof.",
         rating: 5,
     },
     {
         author: "Thiruvignesh Durairaj",
+        role: "Member",
+        avatar: "https://i.pravatar.cc/80?u=thiruvignesh-durairaj",
         text: "Situated peacefully in the outskirts. The ambiance is beautiful. Astonished by the quality of the courts, on par with Bangalore standards.",
         rating: 5,
     },
     {
         author: "Srikhanth",
+        role: "Sports Enthusiast",
+        avatar: "https://i.pravatar.cc/80?u=srikhanth-ms",
         text: "Naturally located amidst farm lands giving mental peace. Coaches are humble and engage everyone. Highly recommended for sports enthusiasts.",
         rating: 5,
+    },
+];
+
+const features = [
+    {
+        icon: Trophy,
+        title: "Professional Coaching",
+        desc: "Expert trainers with proven track records in national-level competitions.",
+        color: "var(--color-primary)",
+    },
+    {
+        icon: Activity,
+        title: "World-Class Facilities",
+        desc: "State-of-the-art equipment and infrastructure maintained to the highest standard.",
+        color: "var(--color-secondary)",
+    },
+    {
+        icon: Users,
+        title: "Community Focused",
+        desc: "Building teamwork, discipline, and sportsmanship in every session.",
+        color: "var(--color-accent)",
+    },
+    {
+        icon: Shield,
+        title: "Safe Environment",
+        desc: "Safe, welcoming space for athletes of all ages and skill levels.",
+        color: "var(--color-gold)",
     },
 ];
 ---
@@ -74,16 +120,23 @@ const testimonials = [
     <!-- Hero Section -->
     <HeroCarousel images={heroImages} />
 
-    <!-- About Section with Video -->
-    <section id="about" class="py-20 md:py-32 relative overflow-hidden">
+    <!-- About Section -->
+    <section id="about" class="py-24 md:py-36 relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-[var(--color-primary)]/5 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-[var(--color-secondary)]/5 rounded-full blur-3xl -z-10"></div>
+
         <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <!-- Video Side -->
-                <div class="relative order-2 md:order-1">
+                <div class="relative order-2 md:order-1 scroll-reveal">
                     <div
-                        class="absolute -inset-8 bg-gradient-to-br from-[var(--color-primary)]/20 via-[var(--color-secondary)]/10 to-transparent rounded-3xl blur-3xl"
-                    >
-                    </div>
+                        class="absolute -inset-6 bg-gradient-to-br from-[var(--color-primary)]/20 via-[var(--color-secondary)]/10 to-transparent rounded-3xl blur-3xl"
+                    ></div>
+                    <!-- Floating accent decoration -->
+                    <div class="absolute -top-5 -left-5 w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] opacity-20 animate-[float_4s_ease-in-out_infinite] rotate-12"></div>
+                    <div class="absolute -bottom-5 -right-5 w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--color-secondary)] to-[var(--color-secondary-dark)] opacity-20 animate-[float_5s_ease-in-out_1s_infinite] -rotate-6"></div>
+
                     <div
                         class="relative rounded-3xl overflow-hidden shadow-2xl border border-[var(--border-color)] group"
                     >
@@ -94,50 +147,36 @@ const testimonials = [
                             autoplay
                             loop
                             muted
-                            playsinline></video>
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"
-                        >
-                        </div>
+                            playsinline
+                        ></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+
                         <!-- Sound Toggle Button -->
                         <button
                             id="sound-toggle"
-                            class="absolute bottom-4 right-4 p-3 rounded-full glass hover:bg-white/20 transition-all duration-300 z-20 group/btn"
+                            class="absolute bottom-4 right-4 p-3 rounded-full glass hover:bg-white/20 transition-all duration-300 z-20"
                             aria-label="Toggle Sound"
                         >
-                            <VolumeX
-                                className="w-5 h-5 text-white"
-                                id="volume-off-icon"
-                            />
-                            <Volume2
-                                className="w-5 h-5 text-white hidden"
-                                id="volume-on-icon"
-                            />
+                            <VolumeX className="w-5 h-5 text-white" id="volume-off-icon" />
+                            <Volume2 className="w-5 h-5 text-white hidden" id="volume-on-icon" />
                         </button>
                     </div>
                 </div>
 
                 <!-- Content Side -->
                 <div class="order-1 md:order-2">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
-                    >
-                        <Zap className="w-4 h-4 text-[var(--color-primary)]" />
-                        <span
-                            class="text-sm font-medium text-[var(--text-muted)]"
-                            >About Our Academy</span
-                        >
+                    <div class="scroll-reveal" style="--reveal-delay: 0ms">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
+                            <Zap className="w-4 h-4 text-[var(--color-primary)]" />
+                            <span class="text-sm font-semibold text-[var(--text-muted)]">About Our Academy</span>
+                        </div>
                     </div>
 
-                    <h2
-                        class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-                    >
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight scroll-reveal" style="--reveal-delay: 100ms">
                         Building <span class="text-gradient">Champions</span>
                     </h2>
 
-                    <p
-                        class="text-[var(--text-muted)] mb-8 leading-relaxed text-lg"
-                    >
+                    <p class="text-[var(--text-muted)] mb-10 leading-relaxed text-lg scroll-reveal" style="--reveal-delay: 200ms">
                         MS Sports Academy is dedicated to nurturing young talent
                         and creating a healthy sporting culture in Perundurai.
                         With professional coaches, world-class facilities, and a
@@ -145,107 +184,65 @@ const testimonials = [
                         develop skills, discipline, and sportsmanship.
                     </p>
 
-                    <div class="space-y-5 mb-10">
-                        <div class="flex items-start gap-4 group">
-                            <div
-                                class="bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 p-3 rounded-xl group-hover:scale-110 transition-transform"
-                            >
-                                <Trophy
-                                    className="w-6 h-6 text-[var(--color-primary)]"
-                                />
-                            </div>
-                            <div>
-                                <h4
-                                    class="font-bold text-[var(--text-main)] mb-1"
+                    <!-- Feature points -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                        {
+                            features.map((feat, i) => (
+                                <div
+                                    class="flex items-start gap-3 p-4 card-modern rounded-2xl card-hover scroll-reveal"
+                                    style={`--reveal-delay: ${300 + i * 80}ms`}
                                 >
-                                    Professional Coaching
-                                </h4>
-                                <p class="text-sm text-[var(--text-muted)]">
-                                    Expert trainers with proven track records
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4 group">
-                            <div
-                                class="bg-gradient-to-br from-[var(--color-secondary)]/20 to-[var(--color-secondary)]/5 p-3 rounded-xl group-hover:scale-110 transition-transform"
-                            >
-                                <Activity
-                                    className="w-6 h-6 text-[var(--color-secondary)]"
-                                />
-                            </div>
-                            <div>
-                                <h4
-                                    class="font-bold text-[var(--text-main)] mb-1"
-                                >
-                                    World-Class Facilities
-                                </h4>
-                                <p class="text-sm text-[var(--text-muted)]">
-                                    State-of-the-art equipment and
-                                    infrastructure
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4 group">
-                            <div
-                                class="bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 p-3 rounded-xl group-hover:scale-110 transition-transform"
-                            >
-                                <Users
-                                    className="w-6 h-6 text-[var(--color-accent)]"
-                                />
-                            </div>
-                            <div>
-                                <h4
-                                    class="font-bold text-[var(--text-main)] mb-1"
-                                >
-                                    Community Focused
-                                </h4>
-                                <p class="text-sm text-[var(--text-muted)]">
-                                    Building teamwork and sportsmanship
-                                </p>
-                            </div>
-                        </div>
+                                    <div
+                                        class="p-2.5 rounded-xl shrink-0"
+                                        style={`background: color-mix(in srgb, ${feat.color} 15%, transparent);`}
+                                    >
+                                        <feat.icon
+                                            className="w-5 h-5"
+                                            style={{ color: feat.color }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-[var(--text-main)] text-sm mb-0.5">
+                                            {feat.title}
+                                        </h4>
+                                        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                                            {feat.desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))
+                        }
                     </div>
 
                     <a
                         href="#contact"
-                        class="inline-flex items-center gap-2 btn-primary group"
+                        class="btn-primary gap-2 group scroll-reveal"
+                        style="--reveal-delay: 700ms"
                     >
                         Join Our Academy
-                        <ArrowRight
-                            className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                        />
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sports Section -->
-    <section id="sports" class="py-20 md:py-32 relative">
-        <div
-            class="absolute inset-0 bg-gradient-to-b from-[var(--bg-card)] via-[var(--bg-main)] to-[var(--bg-main)] -z-10"
-        >
-        </div>
+    <!-- ===== Sports Section ===== -->
+    <section id="sports" class="py-24 md:py-36 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-[var(--bg-card)]/60 via-[var(--bg-main)] to-[var(--bg-main)] -z-10"></div>
 
         <div class="container mx-auto px-4">
             <div class="text-center mb-16 md:mb-20">
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
-                >
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 scroll-reveal">
                     <Target className="w-4 h-4 text-[var(--color-secondary)]" />
-                    <span class="text-sm font-medium text-[var(--text-muted)]"
-                        >Our Programs</span
-                    >
+                    <span class="text-sm font-semibold text-[var(--text-muted)]">Our Programs</span>
                 </div>
 
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 scroll-reveal" style="--reveal-delay: 100ms">
                     Sports We <span class="text-gradient-secondary">Offer</span>
                 </h2>
-                <p class="text-[var(--text-muted)] max-w-2xl mx-auto text-lg">
-                    Whether you're a beginner or a pro, we have the right
-                    facility and coaching for you.
+                <p class="text-[var(--text-muted)] max-w-xl mx-auto text-lg scroll-reveal" style="--reveal-delay: 200ms">
+                    Whether you're a beginner or a pro, we have the right facility and coaching for you.
                 </p>
             </div>
 
@@ -253,8 +250,8 @@ const testimonials = [
                 {
                     sports.map((sport, index) => (
                         <div
-                            class="card-modern card-hover rounded-3xl overflow-hidden group"
-                            style={`animation: slide-up 0.6s ease-out ${index * 0.1}s both`}
+                            class="card-modern card-hover rounded-3xl overflow-hidden group scroll-reveal"
+                            style={`--reveal-delay: ${index * 100}ms`}
                         >
                             <div class="relative h-56 overflow-hidden">
                                 <div
@@ -264,15 +261,27 @@ const testimonials = [
                                     src={sport.image}
                                     alt={sport.title}
                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    loading="lazy"
                                 />
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                                <div class="absolute bottom-4 left-4 text-5xl transform group-hover:scale-110 transition-transform duration-300">
+
+                                <!-- Sport icon badge -->
+                                <div class="absolute bottom-4 left-4 text-5xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
                                     {sport.icon}
                                 </div>
+
+                                <!-- Hover accent line -->
+                                <div
+                                    class="absolute bottom-0 left-0 w-full h-0.5 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                                    style={`background: ${sport.color};`}
+                                />
                             </div>
                             <div class="p-6">
-                                <h3 class="text-xl font-bold mb-3 text-[var(--text-main)] group-hover:text-[var(--color-primary)] transition-colors">
-                                    {sport.title}
+                                <h3
+                                    class="text-xl font-bold mb-3 text-[var(--text-main)] transition-colors duration-300"
+                                    style=""
+                                >
+                                    <span class="group-hover:text-gradient transition-none">{sport.title}</span>
                                 </h3>
                                 <p class="text-[var(--text-muted)] text-sm leading-relaxed">
                                     {sport.desc}
@@ -285,24 +294,58 @@ const testimonials = [
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="py-20 md:py-32 relative overflow-hidden">
+    <!-- ===== Achievements / Counter Section ===== -->
+    <section class="py-20 relative overflow-hidden">
+        <!-- Bold full-bleed background -->
+        <div class="absolute inset-0 -z-10">
+            <div class="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)]/10 via-[var(--bg-elevated)] to-[var(--color-secondary)]/10"></div>
+            <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)]/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-secondary)]/40 to-transparent"></div>
+        </div>
+
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12" id="achievements-grid">
+                {
+                    achievements.map((stat, i) => (
+                        <div
+                            class="text-center scroll-reveal"
+                            style={`--reveal-delay: ${i * 100}ms`}
+                        >
+                            <div
+                                class={`text-5xl md:text-7xl font-bold mb-3 counter-number ${stat.color}`}
+                                data-target={stat.value}
+                                data-suffix={stat.suffix}
+                            >
+                                0{stat.suffix}
+                            </div>
+                            <div class="text-[var(--text-muted)] text-xs uppercase tracking-widest font-semibold">
+                                {stat.label}
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Testimonials ===== -->
+    <section class="py-24 md:py-36 relative overflow-hidden">
+        <!-- Decorative blobs -->
+        <div class="absolute top-1/2 left-0 w-72 h-72 bg-[var(--color-accent)]/5 rounded-full blur-3xl -z-10 -translate-y-1/2"></div>
+        <div class="absolute top-1/2 right-0 w-64 h-64 bg-[var(--color-secondary)]/5 rounded-full blur-3xl -z-10 -translate-y-1/2"></div>
+
         <div class="container mx-auto px-4">
             <div class="text-center mb-16 md:mb-20">
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
-                >
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 scroll-reveal">
                     <Award className="w-4 h-4 text-[var(--color-accent)]" />
-                    <span class="text-sm font-medium text-[var(--text-muted)]"
-                        >Testimonials</span
-                    >
+                    <span class="text-sm font-semibold text-[var(--text-muted)]">Testimonials</span>
                 </div>
 
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                    Success <span class="text-gradient-accent">Stories</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 scroll-reveal" style="--reveal-delay: 100ms">
+                    What People <span class="text-gradient-accent">Say</span>
                 </h2>
-                <p class="text-[var(--text-muted)] max-w-2xl mx-auto text-lg">
-                    Hear from our community of athletes and parents
+                <p class="text-[var(--text-muted)] max-w-xl mx-auto text-lg scroll-reveal" style="--reveal-delay: 200ms">
+                    Hear from our community of athletes and families
                 </p>
             </div>
 
@@ -310,29 +353,43 @@ const testimonials = [
                 {
                     testimonials.map((t, index) => (
                         <div
-                            class="card-modern rounded-3xl p-8 relative overflow-hidden group hover:border-[var(--border-color-hover)] transition-all duration-300"
-                            style={`animation: slide-up 0.6s ease-out ${index * 0.15}s both`}
+                            class="card-modern rounded-3xl p-8 relative overflow-hidden group hover:border-[var(--border-color-hover)] transition-all duration-300 scroll-reveal"
+                            style={`--reveal-delay: ${index * 120}ms`}
                         >
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--color-accent)]/10 to-transparent rounded-full blur-3xl -z-10 group-hover:scale-150 transition-transform duration-700" />
+                            <!-- Background glow -->
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[var(--color-accent)]/8 to-transparent rounded-full blur-3xl -z-10 group-hover:scale-150 transition-transform duration-700" />
 
-                            <div class="flex gap-1 text-[var(--color-accent)] mb-6">
+                            <!-- Quote mark -->
+                            <div class="text-6xl font-serif leading-none text-[var(--color-accent)]/15 mb-4 select-none">"</div>
+
+                            <!-- Stars -->
+                            <div class="flex gap-1 mb-5">
                                 {[...Array(t.rating)].map(() => (
-                                    <Star className="w-5 h-5 fill-current" />
+                                    <Star className="w-4 h-4 text-[var(--color-gold)] fill-current" />
                                 ))}
                             </div>
 
-                            <p class="text-[var(--text-muted)] mb-8 leading-relaxed italic text-base">
-                                "{t.text}"
+                            <!-- Review text -->
+                            <p class="text-[var(--text-muted)] mb-8 leading-relaxed text-sm">
+                                {t.text}
                             </p>
 
-                            <div class="flex items-center gap-4 mt-auto">
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center text-black font-bold text-lg">
-                                    {t.author[0]}
-                                </div>
+                            <!-- Author -->
+                            <div class="flex items-center gap-4 pt-5 border-t border-[var(--border-color)]">
+                                <img
+                                    src={t.avatar}
+                                    alt={t.author}
+                                    class="w-11 h-11 rounded-full object-cover ring-2 ring-[var(--color-accent)]/30"
+                                    loading="lazy"
+                                />
                                 <div>
-                                    <div class="font-bold text-[var(--text-main)]">
-                                        {t.author}
-                                    </div>
+                                    <div class="font-bold text-[var(--text-main)] text-sm">{t.author}</div>
+                                    <div class="text-xs text-[var(--text-dimmed)] uppercase tracking-wide">{t.role}</div>
+                                </div>
+                                <div class="ml-auto">
+                                    <svg class="w-5 h-5 text-[var(--text-dimmed)]" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M21.543 6.498C22 8.28 22 12 22 12s0 3.72-.457 5.502c-.254.985-.997 1.76-1.938 2.022C17.896 20 12 20 12 20s-5.893 0-7.605-.476c-.945-.266-1.687-1.04-1.938-2.022C2 15.72 2 12 2 12s0-3.72.457-5.502c.254-.985.997-1.76 1.938-2.022C6.107 4 12 4 12 4s5.896 0 7.605.476c.945.266 1.687 1.04 1.938 2.022zM10 15.5l6-3.5-6-3.5v7z" />
+                                    </svg>
                                 </div>
                             </div>
                         </div>
@@ -342,116 +399,70 @@ const testimonials = [
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 md:py-32 relative overflow-hidden">
-        <div
-            class="absolute inset-0 bg-gradient-to-b from-[var(--bg-main)] to-[var(--bg-card)] -z-10"
-        >
-        </div>
+    <!-- ===== Contact Section ===== -->
+    <section id="contact" class="py-24 md:py-36 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-[var(--bg-main)] to-[var(--bg-card)]/50 -z-10"></div>
 
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
-                >
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 scroll-reveal">
                     <MapPin className="w-4 h-4 text-[var(--color-primary)]" />
-                    <span class="text-sm font-medium text-[var(--text-muted)]"
-                        >Get Started</span
-                    >
+                    <span class="text-sm font-semibold text-[var(--text-muted)]">Find Us</span>
                 </div>
 
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 scroll-reveal" style="--reveal-delay: 100ms">
                     Get in <span class="text-gradient">Touch</span>
                 </h2>
+                <p class="text-[var(--text-muted)] max-w-xl mx-auto text-lg scroll-reveal" style="--reveal-delay: 200ms">
+                    We'd love to hear from you. Stop by or reach out anytime.
+                </p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
-                <div class="space-y-6">
-                    <div
-                        class="card-modern rounded-3xl p-6 flex items-start gap-5 hover:border-[var(--border-color-hover)] transition-all group"
-                    >
+                <!-- Contact Cards -->
+                <div class="space-y-5">
+                    {[
+                        {
+                            icon: MapPin,
+                            color: "var(--color-primary)",
+                            title: "Location",
+                            content: `<p class="text-[var(--text-muted)] leading-relaxed text-sm">Back Side of Indian Oil Petrol Bunk,<br/>Chennimalai Road, Perundurai,<br/>Erode - 638 052</p>`,
+                        },
+                        {
+                            icon: Phone,
+                            color: "var(--color-secondary)",
+                            title: "Phone",
+                            content: `<p class="text-[var(--text-muted)] text-sm"><a href="tel:9080187219" class="hover:text-[var(--color-secondary)] transition-colors">9080187219</a> &nbsp;/&nbsp; <a href="tel:9788654453" class="hover:text-[var(--color-secondary)] transition-colors">9788654453</a></p>`,
+                        },
+                        {
+                            icon: Mail,
+                            color: "var(--color-accent)",
+                            title: "Email",
+                            content: `<p class="text-[var(--text-muted)] text-sm"><a href="mailto:contact@mssports.academy" class="hover:text-[var(--color-accent)] transition-colors">contact@mssports.academy</a></p>`,
+                        },
+                    ].map((item, i) => (
                         <div
-                            class="bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 p-4 rounded-2xl group-hover:scale-110 transition-transform"
+                            class="card-modern rounded-3xl p-6 flex items-start gap-5 hover:border-[var(--border-color-hover)] card-hover scroll-reveal group"
+                            style={`--reveal-delay: ${i * 100}ms`}
                         >
-                            <MapPin
-                                className="w-7 h-7 text-[var(--color-primary)]"
-                            />
-                        </div>
-                        <div>
-                            <h4
-                                class="font-bold text-lg mb-2 text-[var(--text-main)]"
+                            <div
+                                class="p-4 rounded-2xl shrink-0 group-hover:scale-110 transition-transform"
+                                style={`background: color-mix(in srgb, ${item.color} 15%, transparent);`}
                             >
-                                Location
-                            </h4>
-                            <p class="text-[var(--text-muted)] leading-relaxed">
-                                Back Side of Indian Oil Petrol Bunk,<br />
-                                Chennimalai Road, Perundurai,<br />
-                                Erode - 638 052
-                            </p>
+                                <item.icon className="w-6 h-6" style={{ color: item.color }} />
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-base mb-2 text-[var(--text-main)]">{item.title}</h4>
+                                <Fragment set:html={item.content} />
+                            </div>
                         </div>
-                    </div>
-
-                    <div
-                        class="card-modern rounded-3xl p-6 flex items-start gap-5 hover:border-[var(--border-color-hover)] transition-all group"
-                    >
-                        <div
-                            class="bg-gradient-to-br from-[var(--color-secondary)]/20 to-[var(--color-secondary)]/5 p-4 rounded-2xl group-hover:scale-110 transition-transform"
-                        >
-                            <Phone
-                                className="w-7 h-7 text-[var(--color-secondary)]"
-                            />
-                        </div>
-                        <div>
-                            <h4
-                                class="font-bold text-lg mb-2 text-[var(--text-main)]"
-                            >
-                                Phone
-                            </h4>
-                            <p class="text-[var(--text-muted)]">
-                                <a
-                                    href="tel:9080187219"
-                                    class="hover:text-[var(--color-secondary)] transition-colors"
-                                    >9080187219</a
-                                > /
-                                <a
-                                    href="tel:9788654453"
-                                    class="hover:text-[var(--color-secondary)] transition-colors"
-                                    >9788654453</a
-                                >
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="card-modern rounded-3xl p-6 flex items-start gap-5 hover:border-[var(--border-color-hover)] transition-all group"
-                    >
-                        <div
-                            class="bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 p-4 rounded-2xl group-hover:scale-110 transition-transform"
-                        >
-                            <Mail
-                                className="w-7 h-7 text-[var(--color-accent)]"
-                            />
-                        </div>
-                        <div>
-                            <h4
-                                class="font-bold text-lg mb-2 text-[var(--text-main)]"
-                            >
-                                Email
-                            </h4>
-                            <p class="text-[var(--text-muted)]">
-                                <a
-                                    href="mailto:contact@mssports.academy"
-                                    class="hover:text-[var(--color-accent)] transition-colors"
-                                >
-                                    contact@mssports.academy
-                                </a>
-                            </p>
-                        </div>
-                    </div>
+                    ))}
                 </div>
 
+                <!-- Map -->
                 <div
-                    class="h-[500px] rounded-3xl overflow-hidden border border-[var(--border-color)] shadow-2xl"
+                    class="h-[450px] md:h-full min-h-[350px] rounded-3xl overflow-hidden border border-[var(--border-color)] shadow-2xl scroll-reveal"
+                    style="--reveal-delay: 300ms"
                 >
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.0553311976937!2d77.5802108!3d11.257340099999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba9750de0fafe21%3A0x4760a78fec1f373a!2sMS%20Sports%20Academy!5e0!3m2!1sen!2sin!4v1763606611342!5m2!1sen!2sin"
@@ -461,7 +472,7 @@ const testimonials = [
                         allowfullscreen=""
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
-                        class="grayscale hover:grayscale-0 transition-all duration-500"
+                        class="grayscale hover:grayscale-0 transition-all duration-700"
                     ></iframe>
                 </div>
             </div>
@@ -470,9 +481,7 @@ const testimonials = [
 
     <script>
         // Video Sound Toggle
-        const video = document.getElementById(
-            "about-video",
-        ) as HTMLVideoElement;
+        const video = document.getElementById("about-video") as HTMLVideoElement;
         const soundToggle = document.getElementById("sound-toggle");
         const volumeOffIcon = document.getElementById("volume-off-icon");
         const volumeOnIcon = document.getElementById("volume-on-icon");
@@ -480,7 +489,6 @@ const testimonials = [
         soundToggle?.addEventListener("click", () => {
             if (video) {
                 video.muted = !video.muted;
-
                 if (video.muted) {
                     volumeOffIcon?.classList.remove("hidden");
                     volumeOnIcon?.classList.add("hidden");
@@ -490,5 +498,45 @@ const testimonials = [
                 }
             }
         });
+
+        // ---- Animated Counters ----
+        function animateCounter(el: HTMLElement, target: number, suffix: string) {
+            const duration = 2000;
+            const startTime = performance.now();
+
+            const update = (currentTime: number) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease-out cubic
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(eased * target);
+                el.textContent = current + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            };
+
+            requestAnimationFrame(update);
+        }
+
+        // Trigger counters when achievements section is visible
+        const counterObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target
+                            .querySelectorAll<HTMLElement>(".counter-number")
+                            .forEach((el) => {
+                                const target = parseInt(el.dataset.target || "0");
+                                const suffix = el.dataset.suffix || "";
+                                animateCounter(el, target, suffix);
+                            });
+                        counterObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.3 },
+        );
+
+        const achievementsGrid = document.getElementById("achievements-grid");
+        if (achievementsGrid) counterObserver.observe(achievementsGrid);
     </script>
 </Layout>

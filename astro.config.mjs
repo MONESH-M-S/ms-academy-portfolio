@@ -13,6 +13,7 @@ export default defineConfig({
     name: "Figtree",
     cssVariable: "--font-figtree"
   }],
+  output: 'static',
   vite: {
     plugins: [tailwindcss()]
   },

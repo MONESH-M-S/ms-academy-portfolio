@@ -1,0 +1,494 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HeroCarousel from "../components/HeroCarousel.astro";
+import { getHeroImages } from "../lib/cloudinary";
+import {
+    ArrowRight,
+    Trophy,
+    Users,
+    Activity,
+    MapPin,
+    Phone,
+    Mail,
+    Star,
+    Zap,
+    Target,
+    Award,
+    Volume2,
+    VolumeX,
+} from "lucide-react";
+
+const heroImages = await getHeroImages();
+
+const sports = [
+    {
+        title: "Badminton",
+        desc: "3 high-quality synthetic courts with professional coaching for beginners to competitive players.",
+        icon: "🏸",
+        image: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2070&auto=format&fit=crop",
+        gradient: "from-lime-500/20 to-green-500/20",
+    },
+    {
+        title: "Tennis",
+        desc: "Outdoor tennis coaching focusing on technique, agility, and match practice.",
+        icon: "🎾",
+        image: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=2070&auto=format&fit=crop",
+        gradient: "from-cyan-500/20 to-blue-500/20",
+    },
+    {
+        title: "Table Tennis",
+        desc: "Sharpen your reflexes with our professional table tennis facilities and coaching.",
+        icon: "🏓",
+        image: "https://images.unsplash.com/photo-1534158914592-062992bbe900?q=80&w=2070&auto=format&fit=crop",
+        gradient: "from-rose-500/20 to-pink-500/20",
+    },
+    {
+        title: "Fitness",
+        desc: "Dedicated gym and fitness sessions to build strength, endurance, and athletic performance.",
+        icon: "💪",
+        image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop",
+        gradient: "from-orange-500/20 to-amber-500/20",
+    },
+];
+
+const testimonials = [
+    {
+        author: "Venkat D",
+        text: "Professionally managed sports academy in Perundurai. Clean, well maintained facilities. One of the best academies with Badminton, TT, Tennis, and Gym under one roof.",
+        rating: 5,
+    },
+    {
+        author: "Thiruvignesh Durairaj",
+        text: "Situated peacefully in the outskirts. The ambiance is beautiful. Astonished by the quality of the courts, on par with Bangalore standards.",
+        rating: 5,
+    },
+    {
+        author: "Srikhanth",
+        text: "Naturally located amidst farm lands giving mental peace. Coaches are humble and engage everyone. Highly recommended for sports enthusiasts.",
+        rating: 5,
+    },
+];
+---
+
+<Layout title="MS Sports Academy - Perundurai">
+    <!-- Hero Section -->
+    <HeroCarousel images={heroImages} />
+
+    <!-- About Section with Video -->
+    <section id="about" class="py-20 md:py-32 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <!-- Video Side -->
+                <div class="relative order-2 md:order-1">
+                    <div
+                        class="absolute -inset-8 bg-gradient-to-br from-[var(--color-primary)]/20 via-[var(--color-secondary)]/10 to-transparent rounded-3xl blur-3xl"
+                    >
+                    </div>
+                    <div
+                        class="relative rounded-3xl overflow-hidden shadow-2xl border border-[var(--border-color)] group"
+                    >
+                        <video
+                            id="about-video"
+                            src="/videos/ms-sports.mp4"
+                            class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                            autoplay
+                            loop
+                            muted
+                            playsinline></video>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"
+                        >
+                        </div>
+                        <!-- Sound Toggle Button -->
+                        <button
+                            id="sound-toggle"
+                            class="absolute bottom-4 right-4 p-3 rounded-full glass hover:bg-white/20 transition-all duration-300 z-20 group/btn"
+                            aria-label="Toggle Sound"
+                        >
+                            <VolumeX
+                                className="w-5 h-5 text-white"
+                                id="volume-off-icon"
+                            />
+                            <Volume2
+                                className="w-5 h-5 text-white hidden"
+                                id="volume-on-icon"
+                            />
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content Side -->
+                <div class="order-1 md:order-2">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
+                    >
+                        <Zap className="w-4 h-4 text-[var(--color-primary)]" />
+                        <span
+                            class="text-sm font-medium text-[var(--text-muted)]"
+                            >About Our Academy</span
+                        >
+                    </div>
+
+                    <h2
+                        class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                    >
+                        Building <span class="text-gradient">Champions</span>
+                    </h2>
+
+                    <p
+                        class="text-[var(--text-muted)] mb-8 leading-relaxed text-lg"
+                    >
+                        MS Sports Academy is dedicated to nurturing young talent
+                        and creating a healthy sporting culture in Perundurai.
+                        With professional coaches, world-class facilities, and a
+                        friendly atmosphere, we help athletes of all ages
+                        develop skills, discipline, and sportsmanship.
+                    </p>
+
+                    <div class="space-y-5 mb-10">
+                        <div class="flex items-start gap-4 group">
+                            <div
+                                class="bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 p-3 rounded-xl group-hover:scale-110 transition-transform"
+                            >
+                                <Trophy
+                                    className="w-6 h-6 text-[var(--color-primary)]"
+                                />
+                            </div>
+                            <div>
+                                <h4
+                                    class="font-bold text-[var(--text-main)] mb-1"
+                                >
+                                    Professional Coaching
+                                </h4>
+                                <p class="text-sm text-[var(--text-muted)]">
+                                    Expert trainers with proven track records
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div
+                                class="bg-gradient-to-br from-[var(--color-secondary)]/20 to-[var(--color-secondary)]/5 p-3 rounded-xl group-hover:scale-110 transition-transform"
+                            >
+                                <Activity
+                                    className="w-6 h-6 text-[var(--color-secondary)]"
+                                />
+                            </div>
+                            <div>
+                                <h4
+                                    class="font-bold text-[var(--text-main)] mb-1"
+                                >
+                                    World-Class Facilities
+                                </h4>
+                                <p class="text-sm text-[var(--text-muted)]">
+                                    State-of-the-art equipment and
+                                    infrastructure
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div
+                                class="bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 p-3 rounded-xl group-hover:scale-110 transition-transform"
+                            >
+                                <Users
+                                    className="w-6 h-6 text-[var(--color-accent)]"
+                                />
+                            </div>
+                            <div>
+                                <h4
+                                    class="font-bold text-[var(--text-main)] mb-1"
+                                >
+                                    Community Focused
+                                </h4>
+                                <p class="text-sm text-[var(--text-muted)]">
+                                    Building teamwork and sportsmanship
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a
+                        href="#contact"
+                        class="inline-flex items-center gap-2 btn-primary group"
+                    >
+                        Join Our Academy
+                        <ArrowRight
+                            className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                        />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sports Section -->
+    <section id="sports" class="py-20 md:py-32 relative">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-[var(--bg-card)] via-[var(--bg-main)] to-[var(--bg-main)] -z-10"
+        >
+        </div>
+
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 md:mb-20">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
+                >
+                    <Target className="w-4 h-4 text-[var(--color-secondary)]" />
+                    <span class="text-sm font-medium text-[var(--text-muted)]"
+                        >Our Programs</span
+                    >
+                </div>
+
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                    Sports We <span class="text-gradient-secondary">Offer</span>
+                </h2>
+                <p class="text-[var(--text-muted)] max-w-2xl mx-auto text-lg">
+                    Whether you're a beginner or a pro, we have the right
+                    facility and coaching for you.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                {
+                    sports.map((sport, index) => (
+                        <div
+                            class="card-modern card-hover rounded-3xl overflow-hidden group"
+                            style={`animation: slide-up 0.6s ease-out ${index * 0.1}s both`}
+                        >
+                            <div class="relative h-56 overflow-hidden">
+                                <div
+                                    class={`absolute inset-0 bg-gradient-to-br ${sport.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10`}
+                                />
+                                <img
+                                    src={sport.image}
+                                    alt={sport.title}
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                <div class="absolute bottom-4 left-4 text-5xl transform group-hover:scale-110 transition-transform duration-300">
+                                    {sport.icon}
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-3 text-[var(--text-main)] group-hover:text-[var(--color-primary)] transition-colors">
+                                    {sport.title}
+                                </h3>
+                                <p class="text-[var(--text-muted)] text-sm leading-relaxed">
+                                    {sport.desc}
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 md:py-32 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 md:mb-20">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
+                >
+                    <Award className="w-4 h-4 text-[var(--color-accent)]" />
+                    <span class="text-sm font-medium text-[var(--text-muted)]"
+                        >Testimonials</span
+                    >
+                </div>
+
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                    Success <span class="text-gradient-accent">Stories</span>
+                </h2>
+                <p class="text-[var(--text-muted)] max-w-2xl mx-auto text-lg">
+                    Hear from our community of athletes and parents
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                {
+                    testimonials.map((t, index) => (
+                        <div
+                            class="card-modern rounded-3xl p-8 relative overflow-hidden group hover:border-[var(--border-color-hover)] transition-all duration-300"
+                            style={`animation: slide-up 0.6s ease-out ${index * 0.15}s both`}
+                        >
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--color-accent)]/10 to-transparent rounded-full blur-3xl -z-10 group-hover:scale-150 transition-transform duration-700" />
+
+                            <div class="flex gap-1 text-[var(--color-accent)] mb-6">
+                                {[...Array(t.rating)].map(() => (
+                                    <Star className="w-5 h-5 fill-current" />
+                                ))}
+                            </div>
+
+                            <p class="text-[var(--text-muted)] mb-8 leading-relaxed italic text-base">
+                                "{t.text}"
+                            </p>
+
+                            <div class="flex items-center gap-4 mt-auto">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center text-black font-bold text-lg">
+                                    {t.author[0]}
+                                </div>
+                                <div>
+                                    <div class="font-bold text-[var(--text-main)]">
+                                        {t.author}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-32 relative overflow-hidden">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-[var(--bg-main)] to-[var(--bg-card)] -z-10"
+        >
+        </div>
+
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
+                >
+                    <MapPin className="w-4 h-4 text-[var(--color-primary)]" />
+                    <span class="text-sm font-medium text-[var(--text-muted)]"
+                        >Get Started</span
+                    >
+                </div>
+
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                    Get in <span class="text-gradient">Touch</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
+                <div class="space-y-6">
+                    <div
+                        class="card-modern rounded-3xl p-6 flex items-start gap-5 hover:border-[var(--border-color-hover)] transition-all group"
+                    >
+                        <div
+                            class="bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 p-4 rounded-2xl group-hover:scale-110 transition-transform"
+                        >
+                            <MapPin
+                                className="w-7 h-7 text-[var(--color-primary)]"
+                            />
+                        </div>
+                        <div>
+                            <h4
+                                class="font-bold text-lg mb-2 text-[var(--text-main)]"
+                            >
+                                Location
+                            </h4>
+                            <p class="text-[var(--text-muted)] leading-relaxed">
+                                Back Side of Indian Oil Petrol Bunk,<br />
+                                Chennimalai Road, Perundurai,<br />
+                                Erode - 638 052
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="card-modern rounded-3xl p-6 flex items-start gap-5 hover:border-[var(--border-color-hover)] transition-all group"
+                    >
+                        <div
+                            class="bg-gradient-to-br from-[var(--color-secondary)]/20 to-[var(--color-secondary)]/5 p-4 rounded-2xl group-hover:scale-110 transition-transform"
+                        >
+                            <Phone
+                                className="w-7 h-7 text-[var(--color-secondary)]"
+                            />
+                        </div>
+                        <div>
+                            <h4
+                                class="font-bold text-lg mb-2 text-[var(--text-main)]"
+                            >
+                                Phone
+                            </h4>
+                            <p class="text-[var(--text-muted)]">
+                                <a
+                                    href="tel:9080187219"
+                                    class="hover:text-[var(--color-secondary)] transition-colors"
+                                    >9080187219</a
+                                > /
+                                <a
+                                    href="tel:9788654453"
+                                    class="hover:text-[var(--color-secondary)] transition-colors"
+                                    >9788654453</a
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="card-modern rounded-3xl p-6 flex items-start gap-5 hover:border-[var(--border-color-hover)] transition-all group"
+                    >
+                        <div
+                            class="bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 p-4 rounded-2xl group-hover:scale-110 transition-transform"
+                        >
+                            <Mail
+                                className="w-7 h-7 text-[var(--color-accent)]"
+                            />
+                        </div>
+                        <div>
+                            <h4
+                                class="font-bold text-lg mb-2 text-[var(--text-main)]"
+                            >
+                                Email
+                            </h4>
+                            <p class="text-[var(--text-muted)]">
+                                <a
+                                    href="mailto:contact@mssports.academy"
+                                    class="hover:text-[var(--color-accent)] transition-colors"
+                                >
+                                    contact@mssports.academy
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="h-[500px] rounded-3xl overflow-hidden border border-[var(--border-color)] shadow-2xl"
+                >
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.0553311976937!2d77.5802108!3d11.257340099999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba9750de0fafe21%3A0x4760a78fec1f373a!2sMS%20Sports%20Academy!5e0!3m2!1sen!2sin!4v1763606611342!5m2!1sen!2sin"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="grayscale hover:grayscale-0 transition-all duration-500"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Video Sound Toggle
+        const video = document.getElementById(
+            "about-video",
+        ) as HTMLVideoElement;
+        const soundToggle = document.getElementById("sound-toggle");
+        const volumeOffIcon = document.getElementById("volume-off-icon");
+        const volumeOnIcon = document.getElementById("volume-on-icon");
+
+        soundToggle?.addEventListener("click", () => {
+            if (video) {
+                video.muted = !video.muted;
+
+                if (video.muted) {
+                    volumeOffIcon?.classList.remove("hidden");
+                    volumeOnIcon?.classList.add("hidden");
+                } else {
+                    volumeOffIcon?.classList.add("hidden");
+                    volumeOnIcon?.classList.remove("hidden");
+                }
+            }
+        });
+    </script>
+</Layout>

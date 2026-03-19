@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getFolders, getImagesInFolder } from '../lib/cloudinary';
+import { Image } from 'lucide-react';
+
+// Fetch folders at build time
+const rootFolder = import.meta.env.CLOUDINARY_ROOT_FOLDER;
+const allFolders = await getFolders(rootFolder);
+const folders = allFolders.filter(f => f.name.toLowerCase() !== 'hero');
+
+// Fetch images for each folder (group)
+const folderData = await Promise.all(
+  folders.map(async (folder) => {
+    const images = await getImagesInFolder(folder.path);
+    return { folder, images };
+  })
+);
+
+// Also fetch images directly in the root folder (if any)
+let rootImages: any[] = [];
+if (rootFolder) {
+    rootImages = await getImagesInFolder(rootFolder);
+}
+
+const galleryData = [
+    // Add root images as a "General" or "Highlights" group if they exist
+    ...(rootImages.length > 0 ? [{ folder: { name: "Highlights", path: rootFolder }, images: rootImages }] : []),
+    ...folderData
+];
+---
+
+<Layout title="Gallery - MS Sports Academy">
+    <div class="pt-24 pb-12 md:pt-32 md:pb-20 container mx-auto px-4">
+        <div class="text-center mb-10 md:mb-16">
+            <h1 class="text-3xl md:text-5xl font-bold mb-4">Our <span class="text-[var(--color-primary)]">Gallery</span></h1>
+            <p class="text-[var(--text-muted)] max-w-2xl mx-auto text-sm md:text-base">
+                Glimpses of our training sessions, tournaments, and happy moments.
+            </p>
+        </div>
+
+        {galleryData.length === 0 ? (
+            <div class="text-center py-20 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)]">
+                <Image className="w-16 h-16 mx-auto text-[var(--text-muted)] mb-4" />
+                <p class="text-[var(--text-muted)]">No images found or gallery is being set up.</p>
+            </div>
+        ) : (
+            <div class="space-y-12 md:space-y-20">
+                {galleryData.map(({ folder, images }) => (
+                    <section>
+                        <div class="flex items-center gap-4 mb-8">
+                            <h2 class="text-3xl font-bold capitalize">{folder.name}</h2>
+                            <div class="h-px bg-[var(--border-color)] flex-1"></div>
+                        </div>
+                        
+                        {images.length > 0 ? (
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {images.map((img) => (
+                                    <div class="group relative aspect-video overflow-hidden rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)]">
+                                        <img 
+                                            src={img.secure_url} 
+                                            alt={img.public_id}
+                                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            loading="lazy"
+                                        />
+                                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                            <button class="bg-white/10 backdrop-blur text-white px-4 py-2 rounded-full border border-white/20 hover:bg-white hover:text-black transition-colors">
+                                                View
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p class="text-[var(--text-muted)] italic">No images in this folder yet.</p>
+                        )}
+                    </section>
+                ))}
+            </div>
+        )}
+    </div>
+</Layout>

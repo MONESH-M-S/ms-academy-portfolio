@@ -1,0 +1,54 @@
+---
+import { Sun, Moon } from "lucide-react";
+---
+
+<button
+    id="theme-toggle"
+    class="p-2 rounded-full hover:bg-white/10 transition-colors"
+    aria-label="Toggle Theme"
+>
+    <Sun className="w-5 h-5 hidden" id="sun-icon" />
+    <Moon className="w-5 h-5 hidden" id="moon-icon" />
+</button>
+
+<script>
+    const themeToggle = document.getElementById("theme-toggle");
+    const sunIcon = document.getElementById("sun-icon");
+    const moonIcon = document.getElementById("moon-icon");
+
+    // Check for saved theme or default to dark
+    const getTheme = () => {
+        if (
+            typeof localStorage !== "undefined" &&
+            localStorage.getItem("theme")
+        ) {
+            return localStorage.getItem("theme");
+        }
+        // Default to dark theme
+        return "dark";
+    };
+
+    const setTheme = (theme: string) => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+
+        // Update icons - show sun in light mode (to switch to dark), show moon in dark mode (to switch to light)
+        if (theme === "light") {
+            sunIcon?.classList.add("hidden");
+            moonIcon?.classList.remove("hidden");
+        } else {
+            sunIcon?.classList.remove("hidden");
+            moonIcon?.classList.add("hidden");
+        }
+    };
+
+    // Initialize theme
+    setTheme(getTheme() || "dark");
+
+    themeToggle?.addEventListener("click", () => {
+        const currentTheme =
+            document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        setTheme(newTheme);
+    });
+</script>

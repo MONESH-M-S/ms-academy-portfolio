@@ -17,7 +17,7 @@ const { images } = Astro.props;
     {
         images.map((img, index) => (
             <div
-                class={`absolute inset-0 z-0 transition-opacity duration-1200 ease-in-out ${index === 0 ? "opacity-100" : "opacity-0"}`}
+                class={`absolute inset-0 z-0 transition-opacity duration-1000 ease-in-out ${index === 0 ? "opacity-100" : "opacity-0"}`}
                 data-carousel-item
             >
                 <img
@@ -26,72 +26,71 @@ const { images } = Astro.props;
                     class="w-full h-full object-cover"
                     loading={index === 0 ? "eager" : "lazy"}
                 />
-                <!-- Multi-layer overlay for depth -->
-                <div class="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-black/75" />
+                <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/80" />
                 <div class="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/20" />
-                <div class="absolute inset-0 bg-[var(--color-primary)]/4" />
             </div>
         ))
     }
 
-    <!-- Animated grid texture overlay -->
+    <!-- Subtle grid texture overlay -->
     <div
-        class="absolute inset-0 z-[1] pointer-events-none opacity-[0.04]"
+        class="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
         style="background-image: linear-gradient(rgba(163,230,53,1) 1px, transparent 1px), linear-gradient(90deg, rgba(163,230,53,1) 1px, transparent 1px); background-size: 64px 64px;"
     ></div>
 
-    <!-- Diagonal gradient accent -->
+    <!-- Gradient accent -->
     <div
-        class="absolute inset-0 z-[1] bg-gradient-to-br from-[var(--color-primary)]/8 via-transparent to-[var(--color-secondary)]/8 opacity-70"
+        class="absolute inset-0 z-[1] bg-gradient-to-br from-[var(--color-primary)]/6 via-transparent to-[var(--color-secondary)]/6"
     ></div>
 
-    <!-- Floating orbs for depth -->
-    <div class="absolute top-1/4 left-10 w-64 h-64 bg-[var(--color-primary)]/10 rounded-full blur-3xl z-[1] animate-[float-slow_8s_ease-in-out_infinite]"></div>
-    <div class="absolute bottom-1/4 right-10 w-56 h-56 bg-[var(--color-secondary)]/10 rounded-full blur-3xl z-[1] animate-[float-slow_10s_ease-in-out_3s_infinite]"></div>
+    <!-- Floating orbs — hidden on mobile to prevent layout issues -->
+    <div class="hidden md:block absolute top-1/4 left-10 w-64 h-64 bg-[var(--color-primary)]/10 rounded-full blur-3xl z-[1] animate-[float-slow_8s_ease-in-out_infinite]"></div>
+    <div class="hidden md:block absolute bottom-1/4 right-10 w-56 h-56 bg-[var(--color-secondary)]/10 rounded-full blur-3xl z-[1] animate-[float-slow_10s_ease-in-out_3s_infinite]"></div>
 
-    <!-- Content -->
-    <div class="relative z-10 container mx-auto px-4 text-center text-white">
+    <!-- Content — pt clears fixed navbar on mobile, pb clears dots/scroll indicator -->
+    <div class="relative z-10 w-full container mx-auto px-5 text-center text-white pt-24 pb-28 md:py-0">
+
         <!-- Badge -->
         <div
-            class="inline-flex items-center gap-2 px-5 py-2 rounded-full hero-stat-card mb-8 animate-[fade-in_0.6s_ease-out]"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full hero-stat-card mb-6 animate-[fade-in_0.6s_ease-out] max-w-[90vw]"
         >
-            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
-            <span class="text-sm font-semibold text-white tracking-wide"
-                >Premier Sports Academy in Perundurai</span
-            >
+            <Sparkles className="w-4 h-4 shrink-0 text-[var(--color-primary)]" />
+            <span class="text-xs sm:text-sm font-semibold text-white tracking-wide leading-snug">
+                Premier Sports Academy in Perundurai
+            </span>
         </div>
 
         <!-- Headline -->
         <h1
-            class="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight animate-[slide-up_0.8s_ease-out_0.2s_both]"
+            class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6 leading-tight animate-[slide-up_0.8s_ease-out_0.2s_both]"
         >
             Elevate Your <span class="text-gradient">Game</span>
         </h1>
 
         <!-- Sub headline -->
         <p
-            class="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto px-4 leading-relaxed animate-[slide-up_0.8s_ease-out_0.4s_both]"
+            class="text-base sm:text-lg md:text-xl text-white/80 mb-8 md:mb-10 max-w-xl mx-auto leading-relaxed animate-[slide-up_0.8s_ease-out_0.4s_both]"
         >
             Train with professional coaches, world-class facilities, and a
-            community of champions. Your journey to excellence starts here.
+            community of champions. Your journey starts here.
         </p>
 
         <!-- CTA Buttons -->
         <div
-            class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-[slide-up_0.8s_ease-out_0.6s_both]"
+            class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10 md:mb-14 animate-[slide-up_0.8s_ease-out_0.6s_both]"
         >
             <a
                 href="#contact"
-                class="btn-primary flex items-center gap-2 w-full sm:w-auto justify-center text-base px-8 py-3.5 group"
+                class="btn-primary flex items-center gap-2 w-full sm:w-auto justify-center text-sm md:text-base px-7 py-3 group"
             >
                 Start Your Journey
                 <ArrowRight
-                    className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
                 />
             </a>
             <a
                 href="/gallery"
-                class="btn-secondary w-full sm:w-auto justify-center text-base px-8 py-3.5"
+                class="btn-secondary w-full sm:w-auto justify-center text-sm md:text-base px-7 py-3"
             >
                 Explore Gallery
             </a>
@@ -99,19 +98,19 @@ const { images } = Astro.props;
 
         <!-- Stats Mini Cards -->
         <div
-            class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto animate-[fade-in_1s_ease-out_0.8s_both]"
+            class="grid grid-cols-4 gap-2 sm:gap-4 max-w-sm sm:max-w-xl md:max-w-3xl mx-auto animate-[fade-in_1s_ease-out_0.8s_both]"
         >
             {[
                 { value: "4+", label: "Sports", gradient: "text-gradient" },
-                { value: "30+", label: "Years Exp.", gradient: "text-gradient-secondary" },
+                { value: "30+", label: "Yrs Exp.", gradient: "text-gradient-secondary" },
                 { value: "100+", label: "Students", gradient: "text-gradient-accent" },
-                { value: "20+", label: "Champions", gradient: "text-gradient" },
+                { value: "20+", label: "Champs", gradient: "text-gradient" },
             ].map((stat) => (
-                <div class="hero-stat-card rounded-2xl p-4 text-center">
-                    <div class={`text-3xl md:text-4xl font-bold mb-1 ${stat.gradient}`}>
+                <div class="hero-stat-card rounded-xl sm:rounded-2xl p-2.5 sm:p-4 text-center">
+                    <div class={`text-xl sm:text-3xl md:text-4xl font-bold mb-0.5 sm:mb-1 ${stat.gradient}`}>
                         {stat.value}
                     </div>
-                    <div class="text-xs text-white/60 uppercase tracking-widest font-semibold">
+                    <div class="text-[10px] sm:text-xs text-white/60 uppercase tracking-wider font-semibold leading-tight">
                         {stat.label}
                     </div>
                 </div>
@@ -122,7 +121,7 @@ const { images } = Astro.props;
     <!-- Carousel Dot Indicators -->
     {images.length > 1 && (
         <div
-            class="absolute bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20"
+            class="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20"
             id="carousel-dots"
         >
             {images.map((_, i) => (
@@ -137,12 +136,12 @@ const { images } = Astro.props;
 
     <!-- Scroll Indicator -->
     <div
-        class="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/50 z-20 animate-bounce"
+        class="absolute bottom-5 left-1/2 transform -translate-x-1/2 text-white/50 z-20 animate-bounce"
     >
         <div
-            class="w-5 h-9 border-2 border-current rounded-full flex justify-center pt-1.5"
+            class="w-5 h-8 border-2 border-current rounded-full flex justify-center pt-1.5"
         >
-            <div class="w-0.5 h-2 bg-current rounded-full animate-pulse"></div>
+            <div class="w-0.5 h-1.5 bg-current rounded-full animate-pulse"></div>
         </div>
     </div>
 </div>
@@ -154,7 +153,6 @@ const { images } = Astro.props;
     let intervalId: ReturnType<typeof setInterval>;
 
     function goToSlide(index: number) {
-        // Hide current
         items[currentIndex].classList.remove("opacity-100");
         items[currentIndex].classList.add("opacity-0");
         dots[currentIndex]?.classList.remove("w-6", "bg-[var(--color-primary)]");
@@ -162,7 +160,6 @@ const { images } = Astro.props;
 
         currentIndex = index;
 
-        // Show next
         items[currentIndex].classList.remove("opacity-0");
         items[currentIndex].classList.add("opacity-100");
         dots[currentIndex]?.classList.remove("w-1.5", "bg-white/40");
@@ -177,7 +174,6 @@ const { images } = Astro.props;
         }, 5500);
     }
 
-    // Dot click navigation
     dots.forEach((dot, i) => {
         dot.addEventListener("click", () => {
             clearInterval(intervalId);

@@ -5,7 +5,6 @@ import tailwindcss from '@tailwindcss/vite';
 
 import react from '@astrojs/react';
 
-import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,12 +15,12 @@ export default defineConfig({
     name: "Figtree",
     cssVariable: "--font-figtree"
   }],
-
-  output: 'static',
-
   vite: {
     plugins: [tailwindcss()]
   },
 
-  adapter: cloudflare(),
+  output: 'static',
+
+
+  // adapter: cloudflare(),
 });

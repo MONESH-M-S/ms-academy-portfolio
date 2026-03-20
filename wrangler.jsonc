@@ -4,7 +4,6 @@
 	"name": "ms-academy-portfolio",
 	"assets": {
 		"directory": "./dist",
-		"binding": "ASSETS",
 		"not_found_handling": "single-page-application"
 	},
 	"observability": {

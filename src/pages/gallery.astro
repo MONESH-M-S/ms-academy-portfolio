@@ -220,6 +220,25 @@ let globalImageIndex = 0;
 </style>
 
 <script>
+  // ====== Lightbox Image Index ======
+  interface LBImage {
+    src: string;
+    alt: string;
+  }
+
+  let imageIndex: LBImage[] = [];
+  let currentLBIndex = 0;
+
+  function rebuildImageIndex() {
+    imageIndex = [];
+    document.querySelectorAll<HTMLElement>('.gallery-section:not(.hidden) .lightbox-trigger').forEach(el => {
+      imageIndex.push({
+        src: el.dataset.src || '',
+        alt: el.dataset.alt || 'Gallery image',
+      });
+    });
+  }
+
   // ====== Category Filter ======
   const filterTabs = document.querySelectorAll<HTMLButtonElement>('.filter-tab');
   const gallerySections = document.querySelectorAll<HTMLElement>('.gallery-section');
@@ -248,27 +267,6 @@ let globalImageIndex = 0;
 
   // Set default active tab
   setActiveFilter('all');
-
-  // ====== Lightbox ======
-  interface LBImage {
-    src: string;
-    alt: string;
-  }
-
-  let imageIndex: LBImage[] = [];
-  let currentLBIndex = 0;
-
-  function rebuildImageIndex() {
-    imageIndex = [];
-    document.querySelectorAll<HTMLElement>('.gallery-section:not(.hidden) .lightbox-trigger').forEach(el => {
-      imageIndex.push({
-        src: el.dataset.src || '',
-        alt: el.dataset.alt || 'Gallery image',
-      });
-    });
-  }
-
-  rebuildImageIndex();
 
   function openLightbox(index: number) {
     if (imageIndex.length === 0) return;
